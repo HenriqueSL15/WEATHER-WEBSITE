@@ -9,13 +9,16 @@ search.addEventListener('click', () => {
     const APIKey = '92e5e9df6f2e599e41bf767159156d2c';
     const city = document.querySelector('.search-box input').value;
 
+    // Caso não tenha cidade, retorna
     if (city === '')
         return;
 
+    // Acessa a API
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
         .then(response => response.json())
         .then(json => {
 
+            // Caso erro 404
             if (json.cod === '404') {
                 container.style.height = '400px';
                 weatherBox.style.display = 'none';
@@ -34,6 +37,7 @@ search.addEventListener('click', () => {
             const humidity = document.querySelector('.weather-details .humidity span');
             const wind = document.querySelector('.weather-details .wind span');
 
+            // Altera padrão de foto dependendo do valor
             switch (json.weather[0].main) {
                 case 'Clear':
                     image.src = 'images/clear.png';
@@ -59,11 +63,13 @@ search.addEventListener('click', () => {
                     image.src = '';
             }
 
+            // Altera valores de cada informação
             temperature.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
             description.innerHTML = `${json.weather[0].description}`;
             humidity.innerHTML = `${json.main.humidity}%`;
             wind.innerHTML = `${parseInt(json.wind.speed)}Km/h`;
 
+            // Altera a visibilidade(novamente)
             weatherBox.style.display = '';
             weatherDetails.style.display = '';
             weatherBox.classList.add('fadeIn');
